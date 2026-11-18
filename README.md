@@ -41,16 +41,6 @@ Order(OrderID, OrderDate, TotalAmount, CustomerID)
 The CustomerID in Order is what links the order back to the customer who placed it.
 
 2. **PostgreSQL Implementation**
-$ "/c/Program Files/PostgreSQL/16/bin/psql.exe" -U postgres
-Password for user postgres:
-
-psql (16.15, server 18.6)
-WARNING: psql major version 16, server major version 18.
-         Some psql features might not work.
-WARNING: Console code page (850) differs from Windows code page (1252)
-         8-bit characters might not work correctly. See psql reference
-         page "Notes for Windows users" for details.
-Type "help" for help.
 
 postgres=# CREATE DATABASE store_modeling_db;
 CREATE DATABASE
@@ -73,4 +63,35 @@ store_modeling_db=# \dt
  public | customer | table | postgres
 (1 row)
 
+store_modeling_db=# CREATE TABLE Orders (
+store_modeling_db(#     OrderID INT PRIMARY KEY,
+store_modeling_db(#     OrderDate DATE,
+store_modeling_db(#     TotalAmount DECIMAL(10,2),
+store_modeling_db(#     CustomerID INT,
+store_modeling_db(#     FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
+store_modeling_db(# );
+CREATE TABLE
+store_modeling_db=# INSERT INTO Orders (OrderID, OrderDate, TotalAmount, CustomerID)
+store_modeling_db-# VALUES
+store_modeling_db-# (5001, '2026-11-18', 250.00, 101),
+store_modeling_db-# (5002, '2026-11-18', 399.99, 101);
+INSERT 0 2
+store_modeling_db=# SELECT * FROM Customer
+store_modeling_db-# SELECT * FROM Customer;
+ERROR:  syntax error at or near "SELECT"
+LINE 2: SELECT * FROM Customer;
+        ^
+store_modeling_db=# SELECT * FROM Orders;
+ orderid | orderdate  | totalamount | customerid
+---------+------------+-------------+------------
+    5001 | 2026-11-18 |      250.00 |        101
+    5002 | 2026-11-18 |      399.99 |        101
+(2 rows)
 
+
+store_modeling_db=# SELECT * FROM Customer;
+ customerid | firstname | lastname |      email       |   phone
+------------+-----------+----------+------------------+------------
+        101 | Lindo     | Thabede  | lindo@gmail.com  | 0821234784
+        102 | Thando    | Ndebe    | thando@gmail.com | 0763456980
+(2 rows)
